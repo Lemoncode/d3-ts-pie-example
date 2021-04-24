@@ -1,3 +1,2 @@
 # d3-ts-pie-example
-
-Demo material from the [Lemoncode Tv](https://www.lemoncode.tv/) video post series.
+Demos del video-post de [Lemoncode Tv](https://www.lemoncode.tv/).
