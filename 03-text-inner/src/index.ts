@@ -6,7 +6,7 @@ interface Ventas {
 }
 
 const ventas: Ventas[] = [
-  { mes: "Enero", ventas: 5000 },
+  { mes: "Enero", ventas: 1200 },
   { mes: "Febrero", ventas: 2500 },
   { mes: "Marzo", ventas: 3000 },
 ];
@@ -52,6 +52,25 @@ var datosArcos = pieLayout(ventas);
 
 const constructorDePath = d3.arc().innerRadius(0).outerRadius(radio);
 
+// move to helper: http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
+function pointIsInArc(pt, ptData, d3Arc) {
+  // Center of the arc is assumed to be 0,0
+  // (pt.x, pt.y) are assumed to be relative to the center
+  var r1 = constructorDePath.innerRadius()(ptData),
+    r2 = constructorDePath.outerRadius()(ptData),
+    theta1 = constructorDePath.startAngle()(ptData),
+    theta2 = constructorDePath.endAngle()(ptData);
+
+  var dist = pt.x * pt.x + pt.y * pt.y,
+    angle = Math.atan2(pt.x, -pt.y);
+
+  angle = angle < 0 ? angle + Math.PI * 2 : angle;
+
+  return (
+    r1 * r1 <= dist && dist <= r2 * r2 && theta1 <= angle && angle <= theta2
+  );
+}
+
 grupoGrafica
   .selectAll("slice")
   .data(datosArcos)
@@ -80,4 +99,42 @@ grupoGrafica
     return command;
   })
   .style("text-anchor", "middle")
-  .style("font-size", 17);
+  .style("font-size", 17)
+  .each(function (d: any) {
+    var bb = this.getBBox(),
+      center = constructorDePath.centroid(<any>d);
+
+    var topLeft = {
+      x: center[0] + bb.x,
+      y: center[1] + bb.y,
+    };
+
+    var topRight = {
+      x: topLeft.x + bb.width,
+      y: topLeft.y,
+    };
+
+    var bottomLeft = {
+      x: topLeft.x,
+      y: topLeft.y + bb.height,
+    };
+
+    var bottomRight = {
+      x: topLeft.x + bb.width,
+      y: topLeft.y + bb.height,
+    };
+
+    d.visible =
+      pointIsInArc(topLeft, d, constructorDePath) &&
+      pointIsInArc(topRight, d, constructorDePath) &&
+      pointIsInArc(bottomLeft, d, constructorDePath) &&
+      pointIsInArc(bottomRight, d, constructorDePath);
+  })
+  .style("display", function (d) {
+    return d["visible"] ? null : "none";
+  });
+
+// TODO: about now showing label when there is not space
+// http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
+// https://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
+// https://stackoverflow.com/questions/14802600/preventing-text-clipping-in-d3-javascript-charting
