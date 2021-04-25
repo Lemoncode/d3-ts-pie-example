@@ -34,15 +34,16 @@ const svg = d3
 
 const radio = Math.min(chartDimensions.width, chartDimensions.height) / 2;
 
+const centroGrafica = {
+  x: margin.left + chartDimensions.height / 2,
+  y: margin.top + chartDimensions.width / 2,
+};
+
 var grupoGrafica = svg
   .append("g")
   .attr("width", chartDimensions.width)
   .attr("height", chartDimensions.height)
-  .attr(
-    "transform",
-    `translate({$margin.left + (chartDimensions.height / 2), {$margin.top + chartDimensiones.width /2}})`
-  );
-
+  .attr("transform", `translate(${centroGrafica.x}, ${centroGrafica.y})`);
 const pieLayout = d3.pie<Ventas>().value(function (d) {
   return d.ventas;
 });
