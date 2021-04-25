@@ -6,7 +6,7 @@ interface Ventas {
 }
 
 const ventas: Ventas[] = [
-  { mes: "Enero", ventas: 1200 },
+  { mes: "Enero", ventas: 120 },
   { mes: "Febrero", ventas: 2500 },
   { mes: "Marzo", ventas: 3000 },
 ];
