@@ -44,6 +44,7 @@ var grupoGrafica = svg
   .attr("width", chartDimensions.width)
   .attr("height", chartDimensions.height)
   .attr("transform", `translate(${centroGrafica.x}, ${centroGrafica.y})`);
+  
 const pieLayout = d3.pie<Ventas>().value(function (d) {
   return d.ventas;
 });
