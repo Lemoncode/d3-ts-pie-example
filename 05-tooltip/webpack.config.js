@@ -11,7 +11,7 @@ module.exports = {
     extensions: [".js", ".ts"],
   },
   entry: {
-    app: "./index.ts",
+    app: ["./styles.css", "./index.ts"],
   },
   output: {
     filename: "[name].[chunkhash].js",
