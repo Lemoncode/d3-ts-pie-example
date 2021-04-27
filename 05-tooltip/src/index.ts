@@ -1,4 +1,11 @@
 import * as d3 from "d3";
+import styles from "./styles.css";
+
+const tooltipDiv = d3
+  .select("body")
+  .append("div")
+  .attr("class", styles.tooltip)
+  .style("opacity", 0);
 
 interface Point {
   x: number;
@@ -88,6 +95,15 @@ grupoGrafica
   .attr("d", <any>constructorDePath)
   .attr("fill", function (d) {
     return color(d.data.mes);
+  })
+  .on("mouseover", function (event, datum: d3.PieArcDatum<Ventas>) {
+    const ventasDatos = datum.data;
+    const coords = { x: event.pageX, y: event.pageY };
+    tooltipDiv.transition().duration(200).style("opacity", 0.9);
+    tooltipDiv
+      .html(`<span>${ventasDatos.mes}: ${ventasDatos.ventas}</span>`)
+      .style("left", `${coords.x}px`)
+      .style("top", `${coords.y - 28}px`);
   });
 
 grupoGrafica
@@ -142,3 +158,8 @@ grupoGrafica
   .style("display", function (d) {
     return d["visible"] ? null : "none";
   });
+
+// TODO: about now showing label when there is not space
+// http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
+// https://stackoverflow.com/questions/19792552/d3-put-arc-labels-in-a-pie-chart-if-there-is-enough-space
+// https://stackoverflow.com/questions/14802600/preventing-text-clipping-in-d3-javascript-charting
