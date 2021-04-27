@@ -1,5 +1,10 @@
 import * as d3 from "d3";
 
+interface Point {
+  x: number;
+  y: number;
+}
+
 interface Ventas {
   mes: string;
   ventas: number;
@@ -53,16 +58,20 @@ var datosArcos = pieLayout(ventas);
 const constructorDePath = d3.arc().innerRadius(0).outerRadius(radio);
 
 // move to helper: http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
-function pointIsInArc(pt, ptData, d3Arc) {
+function EstaElPuntoEnElArco(
+  punto: Point,
+  arco: d3.DefaultArcObject,
+  d3Arc: d3.Arc<any, d3.DefaultArcObject>
+) {
   // Center of the arc is assumed to be 0,0
   // (pt.x, pt.y) are assumed to be relative to the center
-  var r1 = constructorDePath.innerRadius()(ptData),
-    r2 = constructorDePath.outerRadius()(ptData),
-    theta1 = constructorDePath.startAngle()(ptData),
-    theta2 = constructorDePath.endAngle()(ptData);
+  var r1 = d3Arc.innerRadius()(arco),
+    r2 = d3Arc.outerRadius()(arco),
+    theta1 = d3Arc.startAngle()(arco),
+    theta2 = d3Arc.endAngle()(arco);
 
-  var dist = pt.x * pt.x + pt.y * pt.y,
-    angle = Math.atan2(pt.x, -pt.y);
+  var dist = punto.x * punto.x + punto.y * punto.y,
+    angle = Math.atan2(punto.x, -punto.y);
 
   angle = angle < 0 ? angle + Math.PI * 2 : angle;
 
@@ -104,31 +113,31 @@ grupoGrafica
     var bb = this.getBBox(),
       center = constructorDePath.centroid(<any>d);
 
-    var topLeft = {
+    var topLeft: Point = {
       x: center[0] + bb.x,
       y: center[1] + bb.y,
     };
 
-    var topRight = {
+    var topRight: Point = {
       x: topLeft.x + bb.width,
       y: topLeft.y,
     };
 
-    var bottomLeft = {
+    var bottomLeft: Point = {
       x: topLeft.x,
       y: topLeft.y + bb.height,
     };
 
-    var bottomRight = {
+    var bottomRight: Point = {
       x: topLeft.x + bb.width,
       y: topLeft.y + bb.height,
     };
 
     d.visible =
-      pointIsInArc(topLeft, d, constructorDePath) &&
-      pointIsInArc(topRight, d, constructorDePath) &&
-      pointIsInArc(bottomLeft, d, constructorDePath) &&
-      pointIsInArc(bottomRight, d, constructorDePath);
+      EstaElPuntoEnElArco(topLeft, d, constructorDePath) &&
+      EstaElPuntoEnElArco(topRight, d, constructorDePath) &&
+      EstaElPuntoEnElArco(bottomLeft, d, constructorDePath) &&
+      EstaElPuntoEnElArco(bottomRight, d, constructorDePath);
   })
   .style("display", function (d) {
     return d["visible"] ? null : "none";
