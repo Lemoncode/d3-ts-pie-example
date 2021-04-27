@@ -72,10 +72,8 @@ grupoGrafica
     return d.data.mes;
   })
   .attr("transform", function (d) {
-    const datos = constructorDePath.centroid(<any>d);
-    const x = Math.trunc(datos[0]);
-    const y = Math.trunc(datos[1]);
-    const command = `translate(${x}, ${y})`; //`translate(${x}, ${y})`;
+    const centro = constructorDePath.centroid(<any>d);
+    const command = `translate(${centro[0]}, ${centro[1]})`;
     console.log(command);
     return command;
   })
