@@ -71,16 +71,16 @@ grupoGrafica
   .text(function (d) {
     return d.data.mes;
   })
+  .style("text-anchor", "middle")
+  .style("font-size", 17)
+  .style("font-family", "arial")
+  .style("fill", "#FFFFFF")
   .attr("transform", function (d) {
     const centro = constructorDePath.centroid(<any>d);
     const command = `translate(${centro[0]}, ${centro[1]})`;
     console.log(command);
     return command;
-  })
-  .style("text-anchor", "middle")
-  .style("font-size", 17)
-  .style("font-family", "arial")
-  .style("fill", "#FFFFFF");
+  });
 
 // TODO: about now showing label when there is not space
 // http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
