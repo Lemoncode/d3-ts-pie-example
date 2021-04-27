@@ -78,7 +78,9 @@ grupoGrafica
     return command;
   })
   .style("text-anchor", "middle")
-  .style("font-size", 17);
+  .style("font-size", 17)
+  .style("font-family", "arial")
+  .style("fill", "#FFFFFF");
 
 // TODO: about now showing label when there is not space
 // http://plnkr.co/edit/3G0ALAVNACNhutOqDelk?p=preview&preview
