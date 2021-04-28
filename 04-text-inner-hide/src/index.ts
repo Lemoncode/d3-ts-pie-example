@@ -110,25 +110,25 @@ grupoGrafica
   .style("text-anchor", "middle")
   .style("font-size", 17)
   .each(function (d: any) {
-    var bb = this.getBBox(),
-      center = constructorDePath.centroid(<any>d);
+    const bb = this.getBBox();
+    const center = constructorDePath.centroid(<any>d);
 
-    var topLeft: Point = {
+    const topLeft: Point = {
       x: center[0] + bb.x,
       y: center[1] + bb.y,
     };
 
-    var topRight: Point = {
+    const topRight: Point = {
       x: topLeft.x + bb.width,
       y: topLeft.y,
     };
 
-    var bottomLeft: Point = {
+    const bottomLeft: Point = {
       x: topLeft.x,
       y: topLeft.y + bb.height,
     };
 
-    var bottomRight: Point = {
+    const bottomRight: Point = {
       x: topLeft.x + bb.width,
       y: topLeft.y + bb.height,
     };
